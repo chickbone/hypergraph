@@ -1,10 +1,13 @@
-#import "/assignment/functions.typ": *
+#import "/functions.typ": *
+#import "@preview/cetz:0.2.2"
+#import "@preview/fletcher:0.4.4"
+#import "@preview/gentle-clues:0.8.0": *
 #import "@preview/physica:0.9.3": *
 
 #set text(lang: "jp")
-#set text(font: "Yu Mincho",12pt)
-#show emph: set text(font: "Yu Mincho")
-#show strong: set text(font: "Yu Mincho", fill: red)
+#set text(font: "Harano Aji Mincho",12pt)
+#show emph: set text(font: "Harano Aji Mincho",weight: "bold")
+#show strong: set text(font: "Harano Aji Mincho",weight: "bold",)
 
 #let title1 ="hypergraphについての補足"
 
@@ -50,7 +53,11 @@
 
 #let comb(a,b) = $vec(#a,#b)$
 #let Set = $bold("Set")$
+#let Grph = $bold("Grph")$
+#let rGrph(r) = $#r thin hyph.nobreak thin bold("Grph")$
 #let power(A) = $frak(P)(#A)$
+#let rgraph(r) = [$#r thin hyph.nobreak thin$graph]
+#let krgraph(k,r) = [$#k thin$部$thin #r thin hyph.nobreak thin$graph]
 
 #show "、": "，"
 #show "。": "．"
@@ -65,14 +72,18 @@
 #let i = h(indentspace)
 
 #big_title(emph(title1))
-#align(center,[柏原 功誠＠理学部1回])
+#align(center,[
+  柏原 功誠＠理学部1回
+
+  $dash.em$ 概要 $dash.em$
+])
 
 hypergraphの概念は @関真一朗グリーン において導入されているが、もう少し良い定式化があるのではないかと考えた。ここにその一端をお見せしよう。
 = 準備
 
-#i $Set$ を*有限*集合全体が成す圏(集まり)とし (通常の定義とは*赤字*の部分が異なる)、$power(V)$ を$V$の部分集合全体の集合とする。また、$V in Set, space r in NN$ に対して、$V$の濃度(元の個数)が $r$ である部分集合全体を
+#i $Set$ を*有限*集合全体が成す圏(集まり)とし (通常の定義とは*太字*の部分が異なる)、$power(V)$ を$V$の部分集合全体の集合とする。また、$V in Set, space r in NN$ に対して、$V$の濃度(元の個数)が $r$ である部分集合全体を
 $
-comb(V,r) := {e in power(V) | "#"e = r}
+comb(V,r) := {e in power(V) | hash e = r}
 $
 とする。
 
@@ -88,7 +99,7 @@ $
 ただし、ここで言うgraphとは単純無向有限graph、即ち多重辺を許さず頂点集合が有限なものに限っていることに注意されたい。
 
 #theorem(title: "graph", kind: "定義",[
-  頂点集合$V in Set$ と 辺集合$E subset comb(V,2)$ の組 $ G = (V,E) $ を*graph*という。
+  頂点集合$thin V in Set$ と 辺集合$E subset comb(V,2)$ の組 $ G = (V,E) $ を*graph*という。
 ])
 
 #theorem(title: "三角形", kind: "例",[
@@ -103,14 +114,15 @@ $
 
 
 #theorem(title: "hypergraph", kind: "定義",[
-  頂点集合$V in Set$ と 辺集合$E subset power(V)$ の組 $ G = (V,E) $ を*hypergraph*という。
+  頂点集合$thin V in Set$ と 辺集合$E subset power(V)$ の組 $ G = (V,E) $ を*hypergraph*という。
 ]) 
 
-#i @関真一朗グリーン では $E subset power(V) backslash {emptyset}$ としているのは、空グラフ $(V,emptyset)$ と $(V,{emptyset})$ が紛らわしいからであろう(一般に、$emptyset$と${emptyset}$は集合として異なる)。
-だだ、一般論を展開する上では上記のように定義したほうが自然であると考えた。
-筆者はこの違いがもたらす影響を全ては把握できていない (以降に出てくる具体例は全て @関真一朗グリーン の定義を満たすので安心してほしい)。
+#i @関真一朗グリーン では $E subset power(V) backslash {emptyset}$ と定義しているのは、空グラフ $(V,emptyset)$ と $(V,{emptyset})$ が紛らわしいからであろう(一般に、$emptyset$と${emptyset}$は集合として異なる)。
+だだ、一般論を展開する上では上記のような定義を採用したほうが自然であると考えた。
+この違いがもたらす影響を筆者は全て把握できてはいない (以降に出てくる具体例は全て @関真一朗グリーン の定義を満たすので安心してほしい)。
 
-= $k$#h(0.2em)部#h(0.2em)$r dash.fig$graph (その一)
+= #krgraph($k$,$r$) (その一)
+
 
 
 #pagebreak()
