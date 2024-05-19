@@ -18,7 +18,8 @@
 #set list(indent: 0.5em)
 #set enum(numbering: "i)")
 #set heading(numbering: "1.")
-// \
+#set figure(supplement: "図")
+
 #set page(
   paper: "a4",
   header: align(right)[
@@ -80,11 +81,15 @@
 #align(center,[
   柏原 功誠\@理学部1回
 
- $dash.em$#text(10pt)[概要]$dash.em$\
-  hypergraphの概念は @関真一朗グリーン において導入されているが、もう少し良い定式化があるのではないかと考えた。ここにその一端をお見せしよう。
-= 準備
-
+  #text(10pt)[
+    $dash.em$概要$dash.em$\
+    hypergraphの概念は @関真一朗グリーン において導入されているが、もう少し良い定式化があるのではないかと考えた。ここにその一端をお見せしよう。
+  ]
 ])
+
+#outline()
+
+= 準備
 
 #i$Set$を*有限*集合全体が成す圏(集まり)とし (通常の定義とは*太字*の部分が異なる)、$power(V)$を$V in Set$の部分集合全体の集合とする。
 また、$V in Set, space r in NN$に対して、$V$の濃度(元の個数)が$r$である部分集合全体を
@@ -114,10 +119,30 @@ $
   とすることで実現できる。
 ])
 
+#figure(
+  cetz.canvas({
+  import cetz.draw: *
+//  intersections("i", {
+//    line((-1,0),(0,1.5))
+//    line((-1,0),(1,0))
+//    line((1,0),(0,1.5))
+//  })
+//  for-each-anchor("i", (name) => {
+//    circle("i." + name, radius: .1, fill: blue)
+//  })
+    circle((-1,0), radius: 0.1, fill: black, name: "a")
+    circle((1,0), radius: 0.1, fill: black, name: "b")
+    circle((0,1.5), radius: 0.1, fill: black, name: "c")
+    line("a","b")
+    line("b","c")
+    line("a","c")
+  }),
+  caption: [三角形$K_3$の一例]
+)
+
 #i 辺全体を部分集合族で定めたことにより、同じ頂点をもつ辺は自動的に同一視されることに注意してほしい(結果的に多重辺は無くなっている)。
 
 #i 以上の定義においては$E$は$comb(V,2)$の部分集合、即ち辺集合の各元$e$は2点集合であった。ここを$E subset power(V)$まで緩める、つまり辺$e$が2点以上のものを考えることで、hypergraphの定義を得る。
-
 
 #theorem(title: "hypergraph", kind: "定義",[
   頂点集合$thin V in Set$と 辺集合$E subset power(V)$の組
@@ -140,15 +165,35 @@ $
 
 = #krgraph($k$,$r$) (その一)
 
-#i この章では、厳密な定義は後回しで#krgraph($k$,$r$)を理解することを目標とする。特に、重要な例として、#krgraph(3,2) をとりあげる。
+#i この章では、厳密な定義は後回しで#krgraph($k$,$r$)を理解することを目標とする。特に、重要な例として、#krgraph(3,2) を取り上げる。
 
-まず、$r in NN$に対して #rgraph($r$) とは各辺の濃度が$r$であるhypergraphのことである:
+#i まず、$r in NN$に対して #rgraph($r$) とは各辺の濃度が$r$であるhypergraphのことである:
 
 #theorem(title: "hypergraph", kind: "定義",[
   頂点集合$thin V in Set$と 辺集合$E subset comb(V,r)$の組$ G = (V,E) $を#emph(rgraph($bold(r)$))という。
   このとき、$E$の元$e$を辺と呼ぶ。
 ])
 
+#figure(
+  cetz.canvas({
+    import cetz.draw: *
+    for (x,y,n,d) in (
+      (-1,0,  "a", "north"),
+      (1,0,   "b", "north"),
+      (0,1.5, "c", "south"),
+      (2,1.5, "d", "south"),
+    ) {
+      circle((x,y), radius: .1,fill: black, name: n)
+      content(n, n, padding: .2, anchor: d)
+    }
+    line("a", "b", "c", "a", fill: blue,stroke: none)
+    line("b", "d", "c", close: true, fill: red,stroke: none)
+  }),
+  caption: [#rgraph(3)$V = {a,b,c,d}, space E = {e_1 = {a,b,c}, e_2 = {b,c,d}}$]
+)
+
+この定義において、通常のgraphとは#rgraph(2)のことである。
+
 #pagebreak()
 
-#bibliography("hypergraph.bib")
+#bibliography("hypergraph.bib", title: "参考文献")
