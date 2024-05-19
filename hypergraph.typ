@@ -49,41 +49,47 @@
   theorem-number.step()
 }
 
-#theorem-number.step()
-
-#let comb(a,b) = $vec(#a,#b)$
-#let Set = $bold("Set")$
-#let Grph = $bold("Grph")$
-#let rGrph(r) = $#r thin hyph.nobreak thin bold("Grph")$
-#let power(A) = $frak(P)(#A)$
-#let rgraph(r) = [$#r thin hyph.nobreak thin$graph]
-#let krgraph(k,r) = [$#k thin$部$thin #r thin hyph.nobreak thin$graph]
+#let comb(a,b) =$vec(#a,#b)$
+#let Set =$bold("Set")$
+#let Grph =$bold("Grph")$
+#let rGrph(r) =$#r thin hyph.nobreak thin bold("Grph")$
+#let power(A) =$frak(P)(#A)$
+#let rgraph(r) = [$#r thin hyph.nobreak$graph]
+#let krgraph(k,r) = [$#k$部$#r thin hyph.nobreak$graph]
 
 #show "、": "，"
 #show "。": "．"
 
 // 先頭字下げ
 #show heading: it =>  {
+    theorem-number.update(1)
     it
     par(text(size:0.5em, ""))
+}
+#show math.equation: it => {
+  h(0.17em, weak: true)
+  it
+  h(0.17em, weak: true)
 }
 
 #let indentspace = 1em
 #let i = h(indentspace)
 
+// body
 #big_title(emph(title1))
 #align(center,[
-  柏原 功誠＠理学部1回
+  柏原 功誠\@理学部1回
 
-  $dash.em$ 概要 $dash.em$
-])
-
-hypergraphの概念は @関真一朗グリーン において導入されているが、もう少し良い定式化があるのではないかと考えた。ここにその一端をお見せしよう。
+ $dash.em$#text(10pt)[概要]$dash.em$\
+  hypergraphの概念は @関真一朗グリーン において導入されているが、もう少し良い定式化があるのではないかと考えた。ここにその一端をお見せしよう。
 = 準備
 
-#i $Set$ を*有限*集合全体が成す圏(集まり)とし (通常の定義とは*太字*の部分が異なる)、$power(V)$ を$V$の部分集合全体の集合とする。また、$V in Set, space r in NN$ に対して、$V$の濃度(元の個数)が $r$ である部分集合全体を
+])
+
+#i$Set$を*有限*集合全体が成す圏(集まり)とし (通常の定義とは*太字*の部分が異なる)、$power(V)$を$V in Set$の部分集合全体の集合とする。
+また、$V in Set, space r in NN$に対して、$V$の濃度(元の個数)が$r$である部分集合全体を
 $
-comb(V,r) := {e in power(V) | hash e = r}
+  comb(V,r) := {e in power(V) | hash e = r}
 $
 とする。
 
@@ -99,31 +105,49 @@ $
 ただし、ここで言うgraphとは単純無向有限graph、即ち多重辺を許さず頂点集合が有限なものに限っていることに注意されたい。
 
 #theorem(title: "graph", kind: "定義",[
-  頂点集合$thin V in Set$ と 辺集合$E subset comb(V,2)$ の組 $ G = (V,E) $ を*graph*という。
+  頂点集合$thin V in Set$と 辺集合$E subset comb(V,2)$の組$ G = (V,E) $を*graph*という。
 ])
 
 #theorem(title: "三角形", kind: "例",[
-  三角形 $K_3$ は #hide[頂点集合 と 辺集合$E subset comb(V,2)$ の組]
+  三角形$K_3$は #hide[頂点集合 と 辺集合$E subset comb(V,2)$の組]
   $ V={1,2,3}, space E={{1,2},{2,3},{3,1}} $
   とすることで実現できる。
 ])
 
 #i 辺全体を部分集合族で定めたことにより、同じ頂点をもつ辺は自動的に同一視されることに注意してほしい(結果的に多重辺は無くなっている)。
 
-#i 以上の定義においては $E$ は $comb(V,2)$ の部分集合、即ち辺集合の各元 $e$ は2点集合であった。ここを $E subset power(V)$ まで緩める、つまり辺 $e$ が2点以上のものを考えることで、hypergraphの定義を得る。
+#i 以上の定義においては$E$は$comb(V,2)$の部分集合、即ち辺集合の各元$e$は2点集合であった。ここを$E subset power(V)$まで緩める、つまり辺$e$が2点以上のものを考えることで、hypergraphの定義を得る。
 
 
 #theorem(title: "hypergraph", kind: "定義",[
-  頂点集合$thin V in Set$ と 辺集合$E subset power(V)$ の組 $ G = (V,E) $ を*hypergraph*という。
-]) 
+  頂点集合$thin V in Set$と 辺集合$E subset power(V)$の組
+  $ G = (V,E) $
+  を*hypergraph*という。
+  このとき、$E$の元$e$を辺と呼ぶ。
+])
 
-#i @関真一朗グリーン では $E subset power(V) backslash {emptyset}$ と定義しているのは、空グラフ $(V,emptyset)$ と $(V,{emptyset})$ が紛らわしいからであろう(一般に、$emptyset$と${emptyset}$は集合として異なる)。
-だだ、一般論を展開する上では上記のような定義を採用したほうが自然であると考えた。
-この違いがもたらす影響を筆者は全て把握できてはいない (以降に出てくる具体例は全て @関真一朗グリーン の定義を満たすので安心してほしい)。
+#figure(
+  image("Hypergraph.gif", width: 50%),
+  caption: [hypergraphの例 (Wikipedia "hypergraph" より)],
+)
+
+#warning[
+  @関真一朗グリーン では$E subset power(V) backslash {emptyset}$と定義しているのは、空グラフ$(V,emptyset)$と$(V,{emptyset})$が紛らわしいからであろう
+  (一般に、$emptyset$と${emptyset}$は集合として異なる)。
+  だだ、一般論を展開する上では上記のような定義を採用したほうが自然であると考えた。
+  この違いがもたらす影響を筆者は全て把握できてはいない (以降に出てくる具体例は全て @関真一朗グリーン の定義を満たすので安心してほしい)。
+]
 
 = #krgraph($k$,$r$) (その一)
 
+#i この章では、厳密な定義は後回しで#krgraph($k$,$r$)を理解することを目標とする。特に、重要な例として、#krgraph(3,2) をとりあげる。
 
+まず、$r in NN$に対して #rgraph($r$) とは各辺の濃度が$r$であるhypergraphのことである:
+
+#theorem(title: "hypergraph", kind: "定義",[
+  頂点集合$thin V in Set$と 辺集合$E subset comb(V,r)$の組$ G = (V,E) $を#emph(rgraph($bold(r)$))という。
+  このとき、$E$の元$e$を辺と呼ぶ。
+])
 
 #pagebreak()
 
