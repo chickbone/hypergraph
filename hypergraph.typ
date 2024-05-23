@@ -17,7 +17,7 @@
 )
 #set list(indent: 0.5em)
 #set enum(numbering: "(i)")
-#set heading(numbering: "1.")
+#set heading(numbering: "1.1.")
 #set figure(supplement: "図")
 
 #set page(
@@ -45,6 +45,9 @@
 
 #let indentspace = 1em
 #let i = h(indentspace)
+
+#let Set =$bold("Set")$
+#let Grph =$bold("Grph")$
 
 // body
 #big_title(emph(title1))
@@ -255,8 +258,10 @@ $ lambda: V(G_0) -> J (= [3]) $
 - $J$ をgraph$K_3$と思い、
 - $lambda$を "graphの間の写像" $lambda: G_0 -> K_3$とみなす
 ことにより達成される。
+#pagebreak()
 
-= graph map, #rgraph($bold(r)$) map
+= graphの間の写像
+== graph map
 
 #i 前節で述べたように、この節では "graphの間の写像" graph mapを定義する。
 
@@ -283,16 +288,55 @@ $
   + graph$G$について、$id_(V(G)) : V(G) -> V(G)$は$id_G (e) = e$となるので、明らかにgraph mapとなる。$id_V(G)$を$id_G$と書き、graph$G$の*恒等射*という。一方、一般の写像$f: V(G) -> V(G)$は常にgraph mapになるとは限らない。
 ])
 
+次の例はgraph mapを考える主な動機の一つである。
+
 #theorem(kind: "例",[
-  graph$(X,O_X),(Y,O_Y)$が位相空間となる (位相空間の公理を満たす)とき、$(X,O_X)$から$(Y,O_Y)$へのgraph mapとは即ち連続写像のことである。実際
+  graph$(X,O_X),(Y,O_Y)$が位相空間となる (位相空間の公理を満たす)とき、$(X,O_X)$から$(Y,O_Y)$へのgraph mapとは即ち*連続写像*のことである。実際
   $
    forall U in O_X, exists V in O_Y, space f(U) subset V\ <==> forall V in O_Y, space f^(-1)(V) in O_X 
   $
-  が位相空間の一般論より従う。同様に、graphが(有限)加法族の構造を持つとき、その間のgraph mapとは可測関数のことである。
+  が位相空間の一般論より従う。同様に、graphが(有限)加法族の構造を持つとき、その間のgraph mapとは*可測関数*のことである。
 ])
 
+graph mapの定義がある意味で"うまくいっている"ことは、次の命題によって保証される:
 
+#theorem(kind: "命題",[
+  $F,G,H,L$をgraphとする。
+  + graph map$f:F->G,space g:G->H$に対して、その合成$ g compose f: F->H $もまたgraph mapとなる。
+  + graph map$f:F->G,g:G->H,h:H->L$に対して、結合律$ (h compose g) compose f = h compose (g compose f) $が成り立つ。
+  + 各graph$G$に対して、$id_G : G -> G$があって、任意のgraph map$f:G->H$に対して、$ id_H compose f = f = f compose id_G $が成り立つ。
+])
 
+#proof[
+  (ii)と(iii)は$Set$における合成の定義から直ちに従う。以下(i)を示す。
+
+  $f$と$g$がgraph mapであることから、$e in E(F)$に対して、\
+  #align(center)[
+    $f(e) subset e'$となるような$e' in E(G)$と\
+    $g(e') subset e''$となるような$e'' in E(H)$\
+  ]
+  がとれる。このとき、
+  $
+    (g compose f)(e) = g(f(e)) subset g(e') subset e''
+  $
+  となる。$e in E(F)$は任意であるから、$g compose f$はgraph mapである。
+]
+
+ここまで敢えて圏論の用語を避けてきたが、圏の定義を知っている人には次のように述べた方が簡潔だろう。(知らない人は無視してもらって構わない。)
+
+#theorem(kind: "命題",[
+  graphを対象、graph mapを射とする圏$Grph$を定義できる。
+])
+
+以下、$G in Grph$は$G$がgraphであるという意味で用いる。
+
+== 完全graph
+
+#i さて、対応$V: Grph -> Set$(実は関手になっている)はgraphをその頂点集合に写すのであった。では、逆に頂点集合$V in Set$が与えられたとき自然な方法でgraphを定めることはできるのであろうか？その答えの一つが次の完全graphである。
+
+#theorem(title: "完全graph", kind: "定義",[
+  $V in Set$に対して、$K(V) = (V,power(V)) in Grph$を$V$を頂点とする*完全graph*という。
+])
 
 
 
