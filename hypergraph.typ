@@ -57,12 +57,13 @@
   ]
 ])
 
-#outline()
+#outline(title: "目次")
 
 = 準備
 
-#i$Set$を*有限*集合全体が成す圏(集まり)とし (通常の定義とは*太字*の部分が異なる)、$power(V)$を$V in Set$の部分集合全体の集合とする。
-また、$V in Set, space r in NN$に対して、$V$の濃度(元の個数)が$r$である部分集合全体を
+#i$Set$を*有限*集合全体が成す圏(集まり)とし (通常の定義とは*太字*の部分が異なる)、$power(V)$を$V in Set$の部分集合全体の集合とする。$id_V : V -> V$を恒等写像とする
+
+#i また、$V in Set, space r in NN$に対して、$V$の濃度(元の個数)が$r$である部分集合全体を
 $
   comb(V,r) := {e in power(V) | hash e = r}
 $
@@ -235,20 +236,20 @@ $
       line("1", "3", stroke: 0.2em)
     })
   }),
-  caption: [#krgraph(3,2)$G$の例]
+  caption: [#krgraph(3,2)$G_0$の例]
 ) <3bu2graph>
 
 ここで、$k$色で彩色可能な#rgraph($r$)ことを#krgraph($k$,$r$)と呼ぶこととする (厳密な定義は後述)。
 
 #i ここまで"彩色"という曖昧な用語を用いてきたが、色を塗るというのは結局のところ頂点集合$V$から色の集合$J$への写像(全射)を与えることと等しい。\
-例えば @3bu2graph の#krgraph(3,2)$G$において、$V(G)$から$J=[3]$への写像
-$ lambda: V(G) -> J (= [3]) $
+例えば @3bu2graph の#krgraph(3,2)$G_0$において、$V(G_0)$から$J=[3]$への写像
+$ lambda: V(G_0) -> J (= [3]) $
 は、赤色の点を$1 in J$に、青色の点を$2 in J$に、緑色の点を$3 in J$にそれぞれ対応させる。
 このとき、$j space (in J)$色の点全体は$V_j = lambda^(-1)(j)$と表される。
 
-#i ただ、ここまでの議論には致命的な欠陥がある: 彩色の規則が全く反映されていない！！ 特に$lambda: V(G) -> J$ を適当に与えたとき、$lambda$に対応する彩色が規則を満たす保障はどこにもない。以下の節ではこの問題を解決するように#krgraph($k$,$r$)を定義することに捧げられる。基本的なアイデアとしては、
+#i ただ、ここまでの議論には致命的な欠陥がある: 彩色の規則が全く反映されていない！！ 特に$lambda: V(G_0) -> J$ を適当に与えたとき、$lambda$に対応する彩色が規則を満たす保障はどこにもない。以下の節ではこの問題を解決するように#krgraph($k$,$r$)を定義することに捧げられる。基本的なアイデアとしては、
 - $J$ をgraph$K_3$と思い、
-- $lambda$を "graphの間の写像" $lambda: G -> K_3$とみなす
+- $lambda$を "graphの間の写像" $lambda: G_0 -> K_3$とみなす
 ことにより達成される。
 
 = graph map, #rgraph($bold(r)$) map
@@ -266,11 +267,24 @@ $ lambda: V(G) -> J (= [3]) $
 $
   forall e in E(G), space exists e' in E(G'), space f(e) subset e'
 $
-であり、$G$の各辺を$f$で写した像が$G'$のある辺に含まれているということを主張する。
+であり、$G$の各辺を$f$で写した像が$G'$のある辺に含まれているということを意味する。
 
 #theorem(kind: "例",[
-  
+  + @3bu2graph において、$lambda: V(G_0) -> J = V(K_3)$はgraph map$lambda: G_0 -> K_3$となる. 実際、例えば赤色の点から青色の点への辺$e$は、$lambda$によって$K_3$の辺$e'={1,2}$に移る ($lambda(e) subset e'$が成り立つ)。他の色の間の点も同様であるから、結局$lambda: G_0 -> K_3$はgraph mapとなる。
+  + 二つのgraph$G,H(!= emptyset)$について、全ての$G$の頂点をある$H$の頂点$h in H$に移す写像を$ c_h : V(G) -> V(H), space c_h (v) = h space (forall v in V(G)) $ と定める。このとき、任意の$e in E(G)$に対して$c_h (e) = {h}$であるから、「$c_h$がgraph mapとなる」と「$h in e'$なる$e' in E(H)$が存在する」は同値である。
+  + $id_G := id_(V(G)) : V(G) -> V(G)$は$id_G (e) = e$となるので、明らかにgraph mapとなる。一方、一般の写像$f: V(G) -> V(G)$は常にgraph mapになるとは限らない。
 ])
+
+#theorem(kind: "例",[
+  graph$(X,O_X),(Y,O_Y)$が位相空間となる (位相空間の公理を満たす)とき、$(X,O_X)$から$(Y,O_Y)$へのgraph mapとは即ち連続写像のことである。実際
+  $
+   forall U in O_X, exists V in O_Y, space f(U) subset V\ <==> forall V in O_Y, space f^(-1)(V) in O_X 
+  $
+  が位相空間の一般論より従う。同様に、graphが(有限)加法族の構造を持つとき、その間のgraph mapとは可測関数のことである。
+])
+
+
+
 
 
 
