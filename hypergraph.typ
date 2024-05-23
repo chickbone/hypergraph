@@ -77,16 +77,20 @@ $
 
 = hypergraphの定義
 
-#i hypergraphとは普通の(2-)graphの拡張である。ここではhypergraphを定義する前に通常のgraphが頂点集合とその部分集合族の組として表されることを見よう。\
+#i hypergraphとは普通の(2-)graphを拡張した概念である。ここではhypergraphを定義する前に通常のgraphが頂点集合とその部分集合族の組として表されることを見よう。\
 ただし、ここで言うgraphとは単純無向有限graph、即ち多重辺を許さず頂点集合が有限なものに限っていることに注意されたい。
 
-#theorem(title: "graph", kind: "定義",[
+#theorem(title: "(2-)graph", kind: "定義",[
   頂点集合$thin V in Set$と 辺集合$E subset comb(V,2)$の組$ G = (V,E) $を*graph*という。
+  このとき、$V$の元$v$を頂点、$E$の元$e$を辺と呼ぶ。
 ])
+
+ここで各$e in E$は2元集合なので、二つの異なる頂点$v,w$を用いて$e={v,w}$と書ける。
+この時頂点$v$と$w$に辺が引かれていると考えることで、次のような図が書ける。
 
 #theorem(title: "三角形", kind: "例",[
   三角形$K_3$は #hide[頂点集合 と 辺集合$E subset comb(V,2)$の組]
-  $ V={1,2,3}, space E={{1,2},{2,3},{3,1}} $
+  $ V=[3]={1,2,3}, space E={{1,2},{2,3},{3,1}} $
   とすることで実現できる。
 ])
 
@@ -111,15 +115,15 @@ $
   caption: [三角形$K_3$の一例]
 )
 
-#i 辺全体を部分集合族で定めたことにより、同じ頂点をもつ辺は自動的に同一視されることに注意してほしい(結果的に多重辺は無くなっている)。
+辺全体を部分集合族で定めたことにより、同じ頂点をもつ辺は自動的に同一視されることに注意してほしい(結果的に多重辺は無くなっている)。
 
-#i 以上の定義においては$E$は$comb(V,2)$の部分集合、即ち辺集合の各元$e$は2点集合であった。ここを$E subset power(V)$まで緩める、つまり辺$e$が2点以上のものを考えることで、hypergraphの定義を得る。
+#i 以上の定義においては$E$は$comb(V,2)$の部分集合、即ち辺集合の各元$e$は2元集合であった。ここを$E subset power(V)$まで緩める、つまり辺$e$が2点以上のものを考えることで、hypergraphの定義を得る。
 
 #theorem(title: "hypergraph", kind: "定義",[
   *頂点集合*$thin V in Set$と*辺集合*$E subset power(V)$の組
   $ G = (V,E) $
   を*hypergraph*という。
-  このとき、$E$の元$e$を辺と呼ぶ。また、
+  このとき、$V$の元$v$を頂点、$E$の元$e$を辺と呼ぶ。また、
   $ V(G)=V, space E(G)=E $
   をhypergrphのそれぞれ頂点集合、辺集合を与える対応とする。
 ])
@@ -144,7 +148,7 @@ $
 
 #theorem(title: "r-graph", kind: "定義",[
   頂点集合$thin V in Set$と 辺集合$E subset comb(V,r)$の組$ G = (V,E) $を#emph(rgraph($bold(r)$))という。
-  このとき、$E$の元$e$を辺と呼ぶ。
+  このとき、$E$の元$e$は濃度が$r$の$V$の部分集合である。
 ])
 
 #figure(
@@ -256,6 +260,9 @@ $ lambda: V(G_0) -> J (= [3]) $
 
 #i 前節で述べたように、この節では "graphの間の写像" graph mapを定義する。
 
+
+#i graphとは辺集合という構造を持った集合なので、その間の"写像"としては構造を保つ写像を考えたい。素朴に考えれば辺を辺に写すようなものが良いのだろうが、一般の(hyper)graphでは元の個数についての制限がないので、もう少し条件を緩めてみる。つまり、辺を写した像がある辺に含まれていれば良いとする。ここまでの議論をまとめて、以下の定義を得る。
+
 #theorem(title: "graph map", kind: "定義",[
   二つのgraph$G,G'$に対して、$G$から$G'$への*graph map*$ f: G -> G' $とは、
     + 頂点集合の間の写像$space f: V(G) -> V(G') space$であって、
@@ -269,10 +276,11 @@ $
 $
 であり、$G$の各辺を$f$で写した像が$G'$のある辺に含まれているということを意味する。
 
+
 #theorem(kind: "例",[
-  + @3bu2graph において、$lambda: V(G_0) -> J = V(K_3)$はgraph map$lambda: G_0 -> K_3$となる. 実際、例えば赤色の点から青色の点への辺$e$は、$lambda$によって$K_3$の辺$e'={1,2}$に移る ($lambda(e) subset e'$が成り立つ)。他の色の間の点も同様であるから、結局$lambda: G_0 -> K_3$はgraph mapとなる。
-  + 二つのgraph$G,H(!= emptyset)$について、全ての$G$の頂点をある$H$の頂点$h in H$に移す写像を$ c_h : V(G) -> V(H), space c_h (v) = h space (forall v in V(G)) $ と定める。このとき、任意の$e in E(G)$に対して$c_h (e) = {h}$であるから、「$c_h$がgraph mapとなる」と「$h in e'$なる$e' in E(H)$が存在する」は同値である。
-  + $id_G := id_(V(G)) : V(G) -> V(G)$は$id_G (e) = e$となるので、明らかにgraph mapとなる。一方、一般の写像$f: V(G) -> V(G)$は常にgraph mapになるとは限らない。
+  + @3bu2graph において、$lambda: V(G_0) -> J = V(K_3)$はgraph map$lambda: G_0 -> K_3$となる. 実際、例えば赤色の点から青色の点への辺$e$は、$lambda$によって$K_3$の辺$e'={1,2}$に移る ($lambda(e) subset e'$が成り立つ)。他の色の間の辺も同様であるから、結局$lambda: G_0 -> K_3$はgraph mapとなる。
+  + 二つのgraph$G,H(!= emptyset)$について、全ての$G$の頂点をある$H$の頂点$h in H$に移す写像を$ c_h : V(G) -> V(H), space c_h (v) = h space (forall v in V(G)) $ と定める。このとき、任意の$e in E(G)$に対して$c_h (e) = {h}$であるから、「$c_h$がgraph mapとなる」と「$h in e'$なる$e' in E(H)$が存在する」は同値であることがわかる。
+  + graph$G$について、$id_(V(G)) : V(G) -> V(G)$は$id_G (e) = e$となるので、明らかにgraph mapとなる。$id_V(G)$を$id_G$と書き、graph$G$の*恒等射*という。一方、一般の写像$f: V(G) -> V(G)$は常にgraph mapになるとは限らない。
 ])
 
 #theorem(kind: "例",[
