@@ -16,7 +16,7 @@
   leading: 0.6em,
 )
 #set list(indent: 0.5em)
-#set enum(numbering: "i)")
+#set enum(numbering: "(i)")
 #set heading(numbering: "1.")
 #set figure(supplement: "図")
 
@@ -27,36 +27,6 @@
   ],
   numbering: "1",
 )
-
-#let theorem-number = counter("theorem-number")
-
-#let theorem(title: none, kind: "定理", body) = {
-  let head_num = context(counter(heading).get()).first()
-  let thm_num = theorem-number.display()
-  let title-text = {
-   if title == none {
-     emph[#kind #head_num.#thm_num ]
-   }
-   else {
-     emph[#kind #head_num.#thm_num【#title】]
-   }
-  }
-
-  box(stroke: (left: 1pt), inset: (left: 5pt, top: 2pt, bottom: 5pt))[
-    #title-text #h(0.5em)
-    #body
-  ]
-
-  theorem-number.step()
-}
-
-#let comb(a,b) =$vec(#a,#b)$
-#let Set =$bold("Set")$
-#let Grph =$bold("Grph")$
-#let rGrph(r) =$#r thin hyph.nobreak thin bold("Grph")$
-#let power(A) =$frak(P)(#A)$
-#let rgraph(r) = [$#r thin hyph.nobreak$graph]
-#let krgraph(k,r) = [$#k$部$#r thin hyph.nobreak$graph]
 
 #show "、": "，"
 #show "。": "．"
@@ -159,7 +129,7 @@ $
 )
 
 #warning[
-  @関真一朗グリーン では$E subset power(V) backslash {emptyset}$と定義しているのは、空グラフ$(V,emptyset)$と$(V,{emptyset})$が紛らわしいからであろう
+  @関真一朗グリーン では$E subset power(V) without {emptyset}$と定義しているのは、空グラフ$(V,emptyset)$と$(V,{emptyset})$が紛らわしいからであろう
   (一般に、$emptyset$と${emptyset}$は集合として異なる)。
   だだ、一般論を展開する上では上記のような定義を採用したほうが自然であると考えた。
   この違いがもたらす影響を筆者は全て把握できてはいない (以降に出てくる具体例は全て @関真一朗グリーン の定義を満たすので安心してほしい)。
@@ -191,7 +161,7 @@ $
     line("a", "b", "c", "a", fill: blue,stroke: none)
     line("b", "d", "c", close: true, fill: red,stroke: none)
   }),
-  caption: [#rgraph(3)$V = {a,b,c,d}, space E = {e_1 = {a,b,c},space e_2 = {b,c,d}}$]
+  caption: [#rgraph(3) $(V = {a,b,c,d}, space E = {e_1 = {a,b,c},space e_2 = {b,c,d}})$]
 ) <3graphfig>
 
 特に、通常の意味でのgraphとは#rgraph(2)のことである。
@@ -280,6 +250,32 @@ $ lambda: V(G) -> J (= [3]) $
 - $J$ をgraph$K_3$と思い、
 - $lambda$を "graphの間の写像" $lambda: G -> K_3$とみなす
 ことにより達成される。
+
+= graph map, #rgraph($bold(r)$) map
+
+#i 前節で述べたように、この節では "graphの間の写像" graph mapを定義する。
+
+#theorem(title: "graph map", kind: "定義",[
+  二つのgraph$G,G'$に対して、$G$から$G'$への*graph map*$ f: G -> G' $とは、
+    + 頂点集合の間の写像$space f: V(G) -> V(G') space$であって、
+    + 全ての$e in E(G)$に対して、ある$e' in E(G')$が存在して$f(e) subset e'$を満たす 
+  もののことを言う。
+])
+
+上の条件 (ii) は、式で書くと
+$
+  forall e in E(G), space exists e' in E(G'), space f(e) subset e'
+$
+であり、$G$の各辺を$f$で写した像が$G'$のある辺に含まれているということを主張する。
+
+#theorem(kind: "例",[
+  
+])
+
+
+
+
+
 #pagebreak()
 
 #bibliography("hypergraph.bib", title: "参考文献")

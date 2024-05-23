@@ -18,3 +18,33 @@
   ])
   #v(15pt)
 ]
+
+#let theorem-number = counter("theorem-number")
+
+#let theorem(title: none, kind: "定理", body) = {
+  let head_num = context(counter(heading).get()).first()
+  let thm_num = theorem-number.display()
+  let title-text = {
+   if title == none {
+     emph[#kind #head_num.#thm_num ]
+   }
+   else {
+     emph[#kind #head_num.#thm_num【#title】]
+   }
+  }
+
+  box(stroke: (left: 1pt), inset: (left: 5pt, top: 2pt, bottom: 5pt))[
+    #title-text #h(0.5em)
+    #body
+  ]
+
+  theorem-number.step()
+}
+
+#let comb(a,b) =$vec(#a,#b)$
+#let Set =$bold("Set")$
+#let Grph =$bold("Grph")$
+#let rGrph(r) =$#r thin hyph.nobreak thin bold("Grph")$
+#let power(A) =$frak(P)(#A)$
+#let rgraph(r) = [$#r thin hyph.nobreak$graph]
+#let krgraph(k,r) = [$#k$部$#r thin hyph.nobreak$graph]
